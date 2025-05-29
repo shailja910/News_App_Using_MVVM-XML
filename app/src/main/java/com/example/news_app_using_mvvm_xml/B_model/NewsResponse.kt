@@ -2,6 +2,7 @@ package com.example.news_app_using_mvvm_xml.B_model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class NewsResponse(
     @SerializedName("articles")
@@ -10,4 +11,4 @@ data class NewsResponse(
     val status: String,
     @SerializedName("totalResults")
     val totalResults: Int
-)
+): Serializable

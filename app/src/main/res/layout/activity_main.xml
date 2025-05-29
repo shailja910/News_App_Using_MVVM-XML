@@ -4,28 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mvvm_news_app.ui.A_MainActivity">
+    tools:context="com.example.news_app_using_mvvm_xml.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/flFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/newsNavHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="423dp"
-            android:layout_height="664dp"
+            android:layout_width= "match_parent"
+            android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/news_nav_graph" />
-
-
-    </FrameLayout>
+            app:navGraph="@navigation/news_nav_graph"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

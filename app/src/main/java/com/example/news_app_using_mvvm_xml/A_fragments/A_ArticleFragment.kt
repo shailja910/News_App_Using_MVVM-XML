@@ -7,12 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.news_app_using_mvvm_xml.R
 
-/**
- * A simple [Fragment] subclass.
- * Use the [A_ArticleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class A_ArticleFragment : Fragment() {
+class A_ArticleFragment : Fragment(R.layout.fragment_a__article) {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +21,5 @@ class A_ArticleFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_a__article, container, false)
-    }
-
-    companion object {
-
     }
 }

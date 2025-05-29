@@ -1,8 +1,8 @@
-package com.example.mvvm_news_app.ui.E_retrofit_api
+package com.example.news_app_using_mvvm_xml.C_retrofit
 
 
 import com.example.news_app_using_mvvm_xml.B_model.NewsResponse
-import com.example.news_app_using_mvvm_xml.D_util.constants.Companion.API_KEY
+import com.example.news_app_using_mvvm_xml.BuildConfig
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -17,17 +17,9 @@ interface A_RetrofitNewsApi {
     //    // inform the news api about the "apikey " from which the request is being made.
     @GET("v2/top-headlines")
     suspend fun getBreakingNewsInRetro(
-        @Query("country") countryCode: String = "ca",
+        @Query("country") countryCode: String = "us",
         @Query("page") pageNumber: Int=1,
-        @Query("apiKey") apiKey: String= API_KEY
+        @Query("apiKey") apiKey: String= BuildConfig.API_KEY
     ):Response<NewsResponse>
 
-    //from the documentation of news search , we got to know that "q" represents
-    // the search query item parameter name on the newsapi.org . so we will use the same.
-    @GET("v2/everything")
- suspend fun searchfromNewsInRetro(
-        @Query("q") searchQuery: String,
-        @Query("page") pageNumber: Int=1,
-        @Query("apiKey") apiKey: String=API_KEY
-    ):Response<NewsResponse>
 }

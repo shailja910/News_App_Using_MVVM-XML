@@ -1,4 +1,4 @@
-package com.example.mvvm_news_app.ui.E_retrofit_api
+package com.example.news_app_using_mvvm_xml.C_retrofit
 
 import com.example.news_app_using_mvvm_xml.D_util.constants.Companion.BASE_URL
 import retrofit2.Retrofit

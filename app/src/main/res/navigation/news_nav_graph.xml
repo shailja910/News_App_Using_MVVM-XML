@@ -36,6 +36,8 @@
         android:name="com.example.news_app_using_mvvm_xml.A_fragments.A_ArticleFragment"
         android:label="fragment_article"
         tools:layout="@layout/fragment_a__article" >
-
+        <argument
+            android:name="article"
+            app:argType="com.example.news_app_using_mvvm_xml.B_model.Article" />
     </fragment>
 </navigation>

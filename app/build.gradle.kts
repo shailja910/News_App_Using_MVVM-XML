@@ -1,7 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.androidx.navigation.safe.args)
 }
+
+val newsApiKey: String = project.rootProject
+    .file("local.properties")
+    .inputStream()
+    .use { props ->
+        Properties().apply { load(props) }
+    }["API_KEY"] as String
 
 android {
     namespace = "com.example.news_app_using_mvvm_xml"
@@ -15,6 +25,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            buildConfigField("String", "API_KEY", "\"$newsApiKey\"")
     }
 
     buildTypes {
@@ -31,6 +42,7 @@ android {
     buildFeatures{
         viewBinding=true
         dataBinding=true
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
