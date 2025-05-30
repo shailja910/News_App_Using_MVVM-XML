@@ -27,7 +27,4 @@ class C_SavedNewsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_c__saved_news, container, false)
     }
 
-    companion object {
-
-    }
 }

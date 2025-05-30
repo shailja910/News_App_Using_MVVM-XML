@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_app_using_mvvm_xml.D_util.Resource
 import com.example.news_app_using_mvvm_xml.E_rv_adapters.NewsAdapter
@@ -34,7 +35,6 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("e", "neil5")
         _binding = FragmentBreakingNewsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,22 +43,25 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as MainActivity).viewModelInMainActivity
-        Log.d("f", "neil6: $viewModel")
 
         setupRV() // now binding is guaranteed non-null
         viewModel.getBreakingNewsFromViewModel("us")
 
         newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment2_to_articleFragment,
+                bundle
+            )
         }
 
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    Log.d("h", "neil7: ${response::class.simpleName}")
                     response.data?.let { newsResponse ->
-                        Log.d("i", "Neil8: ${newsResponse.articles.size}")
-
                         newsAdapter.differ.submitList(newsResponse.articles)
                     }
                 }
@@ -77,7 +80,6 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     }
 
     fun setupRV() {
-        Log.d("k", "neil9")
         newsAdapter = NewsAdapter()
         binding.rvBreakingNews.apply {
             adapter = newsAdapter

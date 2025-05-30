@@ -33,8 +33,19 @@ class B_SearchNewsFragment : Fragment(R.layout.fragment_b__search_news) {
         viewModel = (activity as MainActivity).viewModelInMainActivity
         setupRV()
 
+        newsAdapter.setOnItemClickListener {
+            val bundle=Bundle().apply {
+                putSerializable("article",it)
+            }
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
+
         //function in view model to show top news on search news page before search query typed.
         viewModel.loadDefaultNews()
+
         //search query
         searchBinding?.etSearch?.doOnTextChanged { text, _, _, _ ->
             searchJob?.cancel()
@@ -64,7 +75,6 @@ class B_SearchNewsFragment : Fragment(R.layout.fragment_b__search_news) {
                 is Resource.Loading-> {
                     showProgressBar()
                 }
-
             }})
     }
 

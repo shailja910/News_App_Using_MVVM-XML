@@ -33,13 +33,11 @@ class NewsAdapter:RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         /*older way without binding
         return ArticleViewHolder(LayoutInflater.from(parent.context).inflate(
                 R.layout.item_article_preview, parent, false)) */
-        Log.d("b", "neil1")
             val binding = RvItemPreviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return ArticleViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        Log.d("c", "neil2 ${differ.currentList.size}")
         return differ.currentList.size
     }
 
@@ -60,7 +58,6 @@ class NewsAdapter:RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
                 onItemClickListener?.let { it(article) }
             }
         }
-        Log.d("d", "Tneil4: ${article.title}")
     }
 
     fun setOnItemClickListener(listener: (Article) -> Unit) {

@@ -33,7 +33,6 @@ class NewsViewModel(val repository: NewsRepository) : ViewModel() {
 
             if (response.isSuccessful) {
                 response.body()?.let { resultResponse ->
-                    Log.d("a", "neil0: $resultResponse")
                     _breakingNews.postValue(Resource.Success(resultResponse))
                 } ?: run {
                     _breakingNews.postValue(Resource.Error("Empty response body"))
@@ -82,7 +81,6 @@ class NewsViewModel(val repository: NewsRepository) : ViewModel() {
                 repository.searchFromNewsInRepo(searchQ, searchNewsPageNumber)
             if (responseOfSearchNews.isSuccessful) {
                 responseOfSearchNews.body()?.let { resultResponse ->
-                    Log.d("a", "neil0: $resultResponse")
                     _searchNews.postValue(Resource.Success(resultResponse))
                 } ?: run {
                     _searchNews.postValue(Resource.Error("Empty response body"))
