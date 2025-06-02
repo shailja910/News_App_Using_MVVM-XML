@@ -11,7 +11,14 @@ class B_Db_Repository(private val dao: ArticleDao) {
         dao.insert(article)
     }
 
-    suspend fun delete(article: Article) {
-        dao.delete(article)
+    //code from saving duplicate in database
+    suspend fun insertIfNotExists(article: Article): Boolean {
+        val existing = dao.getArticleByUrl(article.url)
+        return if (existing == null) {
+            dao.insert(article)
+            true
+        } else {
+            false
+        }
     }
 }

@@ -13,7 +13,11 @@ class B_DB_Viewmodel(private val repository: B_Db_Repository) : ViewModel() {
         repository.insert(article)
     }
 
-    fun delete(article: Article) = viewModelScope.launch {
-        repository.delete(article)
+
+    fun saveArticleIfNotExists(article: Article, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val success = repository.insertIfNotExists(article)
+            onResult(success)
+        }
     }
 }

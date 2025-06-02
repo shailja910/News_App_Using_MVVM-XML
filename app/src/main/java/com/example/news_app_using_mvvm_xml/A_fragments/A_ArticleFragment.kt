@@ -57,8 +57,13 @@ class A_ArticleFragment : Fragment() {
 
         // Handle FAB click to save article
         binding.fab.setOnClickListener {
-            dbviewModel.insert(article)
-            Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
+            dbviewModel.saveArticleIfNotExists(article) { success ->
+                if (success) {
+                    Snackbar.make(it, "Article saved", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(it, "Article already saved", Snackbar.LENGTH_SHORT).show()
+                }
+            }
              }
     }
 

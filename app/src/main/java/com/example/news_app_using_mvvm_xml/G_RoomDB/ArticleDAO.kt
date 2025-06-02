@@ -13,9 +13,10 @@ import com.example.news_app_using_mvvm_xml.B_model.Article
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insert(article: Article)
 
-        @Delete
-        suspend fun delete(article: Article)
+        @Query("SELECT * FROM article_table WHERE url = :url LIMIT 1")
+        suspend fun getArticleByUrl(url: String): Article?
 
         @Query("SELECT * FROM article_table")
         fun getAllArticles(): LiveData<List<Article>>
+
     }
