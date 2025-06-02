@@ -6,37 +6,64 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.example.news_app_using_mvvm_xml.F_viewmodel.NewsViewModel
+import com.example.news_app_using_mvvm_xml.F_viewmodel.A_NewsViewModel
+import com.example.news_app_using_mvvm_xml.F_viewmodel.B_DBViewModelProviderFactory
+import com.example.news_app_using_mvvm_xml.F_viewmodel.B_DB_Viewmodel
+import com.example.news_app_using_mvvm_xml.G_RoomDB.ArticleDatabase
+import com.example.news_app_using_mvvm_xml.I_repository.B_Db_Repository
 import com.example.news_app_using_mvvm_xml.MainActivity
-import com.example.news_app_using_mvvm_xml.R
 import com.example.news_app_using_mvvm_xml.databinding.FragmentAArticleBinding
 import com.google.android.material.snackbar.Snackbar
 
-class A_ArticleFragment : Fragment(R.layout.fragment_a__article) {
-    lateinit var viewModel: NewsViewModel
-    var articleBinding: FragmentAArticleBinding?=null
-    val  args: A_ArticleFragmentArgs by navArgs()
+class A_ArticleFragment : Fragment() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModelInMainActivity
+    private var _binding: FragmentAArticleBinding? = null
+    private val binding get() = _binding!!
 
-        //show the article passed on webview
-        val article = args.article
-        articleBinding?.webView?.apply {
-            webViewClient = WebViewClient()
-            loadUrl(article.url)
-        }
-        articleBinding?.fab?.setOnClickListener{
-            }
-    }
+    private lateinit var viewModel: A_NewsViewModel
+
+    private lateinit var dbviewModel: B_DB_Viewmodel
+
+    private val args: A_ArticleFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        articleBinding = FragmentAArticleBinding.inflate(inflater,container,false)
-        return articleBinding!!.root
+    ): View {
+        _binding = FragmentAArticleBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val database = ArticleDatabase.getDatabase(requireContext())
+        val repository = B_Db_Repository(database.getArticleDao())
+        val viewModelFactory = B_DBViewModelProviderFactory(repository)
+        dbviewModel = ViewModelProvider(this, viewModelFactory)[B_DB_Viewmodel::class.java]
+
+        // Get ViewModels from MainActivity
+        viewModel = (activity as MainActivity).newsviewModelInMainActivity
+
+        val article = args.article
+
+        // Load the article URL in WebView
+        binding.webView.apply {
+            webViewClient = WebViewClient()
+            loadUrl(article.url)
+        }
+
+        // Handle FAB click to save article
+        binding.fab.setOnClickListener {
+            dbviewModel.insert(article)
+            Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
+             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

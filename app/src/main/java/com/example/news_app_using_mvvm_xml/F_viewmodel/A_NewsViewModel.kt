@@ -1,18 +1,16 @@
 package com.example.news_app_using_mvvm_xml.F_viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.news_app_using_mvvm_xml.I_repository.NewsRepository
+import com.example.news_app_using_mvvm_xml.I_repository.A_NewsRepository
 import com.example.news_app_using_mvvm_xml.B_model.NewsResponse
 import com.example.news_app_using_mvvm_xml.D_util.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
-class NewsViewModel(val repository: NewsRepository) : ViewModel() {
+class A_NewsViewModel(val repository: A_NewsRepository) : ViewModel() {
 
     //**************A. Network interaction******************
     //////// (1)BREAKING NEWS CODE /////////////////////

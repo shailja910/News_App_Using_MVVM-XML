@@ -1,24 +1,18 @@
 package com.example.news_app_using_mvvm_xml.B_model
 
-
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
-
+@Entity(tableName = "article_table")
 data class Article(
-    @SerializedName("author")
+    @PrimaryKey(autoGenerate = true)
+    var id:Int?=null,
     val author: String,
-    @SerializedName("content")
     val content: String,
-    @SerializedName("description")
     val description: String,
-    @SerializedName("publishedAt")
     val publishedAt: String,
-    @SerializedName("source")
     val source: Source,
-    @SerializedName("title")
     val title: String,
-    @SerializedName("url")
     val url: String,
-    @SerializedName("urlToImage")
     val urlToImage: String
-): Serializable
+):Serializable

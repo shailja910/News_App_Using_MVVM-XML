@@ -1,7 +1,6 @@
 package com.example.news_app_using_mvvm_xml.E_rv_adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -47,7 +46,7 @@ class NewsAdapter:RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
         val article = differ.currentList[position]
         holder.rvBinding.apply {
-            tvSource.text = article.source.name
+            tvSource.text = article.source?.name
             tvDescription.text = article.description
             tvTitle.text = article.title
             tvPublishedAt.text = article.publishedAt

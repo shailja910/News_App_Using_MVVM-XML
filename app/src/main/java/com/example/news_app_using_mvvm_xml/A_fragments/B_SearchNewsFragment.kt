@@ -10,19 +10,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_app_using_mvvm_xml.D_util.Resource
 import com.example.news_app_using_mvvm_xml.E_rv_adapters.NewsAdapter
-import com.example.news_app_using_mvvm_xml.F_viewmodel.NewsViewModel
+import com.example.news_app_using_mvvm_xml.F_viewmodel.A_NewsViewModel
 import com.example.news_app_using_mvvm_xml.MainActivity
 import com.example.news_app_using_mvvm_xml.R
 import com.example.news_app_using_mvvm_xml.databinding.FragmentBSearchNewsBinding
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class B_SearchNewsFragment : Fragment(R.layout.fragment_b__search_news) {
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: A_NewsViewModel
     lateinit var newsAdapter: NewsAdapter
     var searchBinding: FragmentBSearchNewsBinding?=null
     private var searchJob: Job? = null
@@ -30,7 +29,7 @@ class B_SearchNewsFragment : Fragment(R.layout.fragment_b__search_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ////viewmodel called on search news
-        viewModel = (activity as MainActivity).viewModelInMainActivity
+        viewModel = (activity as MainActivity).newsviewModelInMainActivity
         setupRV()
 
         newsAdapter.setOnItemClickListener {

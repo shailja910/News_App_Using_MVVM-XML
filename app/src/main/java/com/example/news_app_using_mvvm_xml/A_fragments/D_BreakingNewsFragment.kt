@@ -1,7 +1,6 @@
 package com.example.news_app_using_mvvm_xml.A_fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_app_using_mvvm_xml.D_util.Resource
 import com.example.news_app_using_mvvm_xml.E_rv_adapters.NewsAdapter
-import com.example.news_app_using_mvvm_xml.F_viewmodel.NewsViewModel
+import com.example.news_app_using_mvvm_xml.F_viewmodel.A_NewsViewModel
 import com.example.news_app_using_mvvm_xml.MainActivity
 import com.example.news_app_using_mvvm_xml.R
 import com.example.news_app_using_mvvm_xml.databinding.FragmentBreakingNewsBinding
@@ -26,7 +25,7 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     private var _binding: FragmentBreakingNewsBinding? = null
     val binding get() = _binding!!
 
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: A_NewsViewModel
 
     lateinit var newsAdapter: NewsAdapter
 
@@ -42,7 +41,7 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).viewModelInMainActivity
+        viewModel = (activity as MainActivity).newsviewModelInMainActivity
 
         setupRV() // now binding is guaranteed non-null
         viewModel.getBreakingNewsFromViewModel("us")

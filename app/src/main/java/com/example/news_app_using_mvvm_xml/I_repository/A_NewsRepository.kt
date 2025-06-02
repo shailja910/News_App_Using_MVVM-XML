@@ -4,7 +4,7 @@ import com.example.news_app_using_mvvm_xml.B_model.NewsResponse
 import com.example.news_app_using_mvvm_xml.C_retrofit.B_RetrofitInstance
 import retrofit2.Response
 
-class NewsRepository() {
+class A_NewsRepository() {
     //function for repository interact with network API
 
     // 1. breaking news
