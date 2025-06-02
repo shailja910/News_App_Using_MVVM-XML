@@ -14,10 +14,16 @@ class B_DB_Viewmodel(private val repository: B_Db_Repository) : ViewModel() {
     }
 
 
-    fun saveArticleIfNotExists(article: Article, onResult: (Boolean) -> Unit) {
+    //save article to db
+    fun saveArticleIfNotExists(article: Article, onResult: (Boolean) -> Unit) =
         viewModelScope.launch {
             val success = repository.insertIfNotExists(article)
             onResult(success)
         }
+
+
+    //swipe to delete
+    fun swipeToDelete(article:Article)= viewModelScope.launch {
+        repository.swipeToDelete(article)
     }
 }

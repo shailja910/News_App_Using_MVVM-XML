@@ -19,4 +19,7 @@ import com.example.news_app_using_mvvm_xml.B_model.Article
         @Query("SELECT * FROM article_table")
         fun getAllArticles(): LiveData<List<Article>>
 
+        @Delete
+        suspend fun swipeToDelete(article :Article)
+
     }

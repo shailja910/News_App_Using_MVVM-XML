@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.news_app_using_mvvm_xml.D_util.Resource
 import com.example.news_app_using_mvvm_xml.E_rv_adapters.NewsAdapter
 import com.example.news_app_using_mvvm_xml.F_viewmodel.A_NewsViewModel
@@ -22,6 +25,7 @@ import com.example.news_app_using_mvvm_xml.databinding.FragmentBSearchNewsBindin
 import com.example.news_app_using_mvvm_xml.databinding.FragmentBreakingNewsBinding
 import com.example.news_app_using_mvvm_xml.databinding.FragmentCSavedNewsBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -61,7 +65,7 @@ class C_SavedNewsFragment : Fragment(R.layout.fragment_c__saved_news) {
         }
 
         newsAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
+           val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
             findNavController().navigate(
@@ -69,6 +73,39 @@ class C_SavedNewsFragment : Fragment(R.layout.fragment_c__saved_news) {
                 bundle
             )
         }
+
+
+        //swipe to delete
+        // Add swipe-to-delete functionality
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val article = newsAdapter.differ.currentList[position]
+                db_viewModel.swipeToDelete(article)
+
+                Snackbar.make(view, "Article deleted", Snackbar.LENGTH_SHORT)
+                    .setAction("Undo") {
+                        db_viewModel.saveArticleIfNotExists(article) { success ->
+                            if (!success) {
+                                Snackbar.make(view, "Article already exists", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                    }.show()
+            }
+        }
+
+// Attach the ItemTouchHelper to your RecyclerView
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(savedBinding!!.rvSavedNews)
+
     }
 
 
