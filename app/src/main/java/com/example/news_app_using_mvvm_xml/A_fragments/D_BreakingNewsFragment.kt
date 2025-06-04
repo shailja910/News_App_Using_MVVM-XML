@@ -20,22 +20,20 @@ import com.google.android.material.snackbar.Snackbar
  * Use the [D_BreakingNewsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
+class D_BreakingNewsFragment : BaseFragment<FragmentBreakingNewsBinding>() {
 
-    private var _binding: FragmentBreakingNewsBinding? = null
-    val binding get() = _binding!!
+    //private var _binding: FragmentBreakingNewsBinding? = null
+    //val binding get() = _binding!!
 
     lateinit var viewModel: A_NewsViewModel
 
     lateinit var newsAdapter: NewsAdapter
 
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentBreakingNewsBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentBreakingNewsBinding {
+        return FragmentBreakingNewsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,9 +41,24 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
         viewModel = (activity as MainActivity).newsviewModelInMainActivity
 
-        setupRV() // now binding is guaranteed non-null
-        viewModel.getBreakingNewsFromViewModel("us")
 
+        //1. set up RV
+        setupRV() // now binding is guaranteed non-null
+
+
+        //2. check internet connection status
+        handleInternetCheck(
+            showLoading = { showProgressBar() },
+            onConnected = {
+                viewModel.getBreakingNewsFromViewModel("us")
+            },
+            onNoInternet = {
+                hideProgressBar()
+                showNoInternetUI()
+            }
+        )
+
+        //3.click on the article to show it in web view
         newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
@@ -56,6 +69,8 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             )
         }
 
+
+        //4. observe the state changes
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -78,6 +93,7 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         }
     }
 
+    //function definations
     fun setupRV() {
         newsAdapter = NewsAdapter()
         binding.rvBreakingNews.apply {
@@ -86,16 +102,18 @@ class D_BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         }
     }
 
+    //kept the progressbar hidden till the Rv is shown
     fun hideProgressBar() {
         binding.paginationProgressBar.visibility = View.INVISIBLE
     }
 
+    //to show progressbar while loading
     fun showProgressBar() {
         binding.paginationProgressBar.visibility = View.VISIBLE
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    //textview to show internet connection status
+    private fun showNoInternetUI() {
+        binding.tvNoInternet.visibility = View.VISIBLE
     }
 }
